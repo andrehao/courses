@@ -1,0 +1,2 @@
+zip backup.zip -qr ~/dev/repository/courses/alura/linux/workspace
+echo "Backup realizado com sucesso!!!"
