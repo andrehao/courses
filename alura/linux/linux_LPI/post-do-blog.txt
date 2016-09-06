@@ -1,0 +1,103 @@
+Utilizando funções de agregação com GROUP BY no SQL
+30 de março de 2016/Infra /Nenhum Comentário
+Nesses últimos tempos eu resolvi cadastrar todos os livros que comprei no período de 2015 a 2016 em um banco de dados. Então eu criei uma tabela livros e inseri todas as compras que realizei:
+
+SELECT * FROM livros;
+ 
++----+--------------------+----------------------+-------+-------------+
+| id | nome               | autor                | valor | data_compra |
++----+--------------------+----------------------+-------+-------------+
+|  1 | Plataforma Java EE | Alberto Souza        | 39.90 | 2015-12-05  |
+|  2 | Google Android     | João Bosco Monteiro  | 25.90 | 2015-12-10  |
+|  3 | Spring MVC         | Alberto Souza        | 45.90 | 2015-12-20  |
+|  4 | A Web Mobile       | Sergio Lopes         | 26.90 | 2016-01-04  |
+|  5 | REST               | Alexandre Saudate    | 39.90 | 2015-01-12  |
+|  6 | SQL                | AEduardo Gonçalves   | 23.90 | 2015-12-05  |
++----+--------------------+----------------------+-------+-------------+
+6 rows in set (0,00 sec)
+Ótimo!
+Os livros que eu comprei estão bem organizados. Posso até fazer queries para verificar, por exemplo, quais foram os livros que eu paguei mais de R$ 30,00:
+
+SELECT * FROM livros WHERE valor > 30;
+ 
++----+--------------------+-------------------+-------+-------------+
+| id | nome               | autor             | valor | data_compra |
++----+--------------------+-------------------+-------+-------------+
+|  1 | Plataforma Java EE | Alberto Souza     | 39.90 | 2015-12-05  |
+|  3 | Spring MVC         | Alberto Souza     | 45.90 | 2015-12-20  |
+|  5 | REST               | Alexandre Saudate | 39.90 | 2015-01-12  |
++----+--------------------+-------------------+-------+-------------+
+3 rows in set (0,00 sec)
+Porém, agora eu queria saber quanto gastei com todos os livros que paguei acima de R$ 30,00. Ou seja, quero fazer uma soma! Como podemos fazer isso no SQL?
+É muito simples: já existem funções pré-definidas pelos bancos de dados realizar cálculos. Podemos, por exemplo, usar a função SUM para somar:
+
+SELECT SUM(valor) AS total FROM livros WHERE valor > 30;
+ 
++--------+
+| total  |
++--------+
+| 125.70 |
++--------+
+1 row in set (0,00 sec)
+Essas funções são chamadas de funções de agregação. Elas agrupam todas as linhas encontradas e retornam apenas uma única linha com o resultado da operação solicitada. Nesse caso, uma soma 🙂
+
+Consegui verificar o quanto gastei com livros acima de R$ 30,00, mas agora eu preciso saber o quanto gastei por mês!
+Na minha tabela as datas são completas, ou seja: tem dia, mês e ano. Mas, nesse caso, preciso apenas do mês…como podemos retornar apenas o mesmo de uma data?
+Simples! Da mesma forma que o banco de dados forneceu uma função para somar, ele também fornece uma função para devolver o mês de uma data!
+Utilizamos o MONTH() que extrai o mês de uma determinada data:
+
+SELECT nome, valor, MONTH(data_compra) AS mês FROM livros;
+ 
++--------------------+-------+------+
+| nome               | valor | mês  |
++--------------------+-------+------+
+| Plataforma Java EE | 39.90 |   12 |
+| Google Android     | 25.90 |   12 |
+| Spring MVC         | 45.90 |   12 |
+| A Web Mobile       | 26.90 |    1 |
+| REST               | 39.90 |    1 |
+| SQL                | 23.90 |   12 |
++--------------------+-------+------+
+6 rows in set (0,00 sec)
+Então, agora que sabemos como somar e como pegar o mês, basta juntar as duas funções! Vamos fazer nossa nova query:
+
+SELECT SUM(valor) AS total, MONTH(data_compra) AS mês FROM livros;
+ 
++--------+------+
+| total  | mês  |
++--------+------+
+| 202.40 |   12 |
++--------+------+
+1 row in set (0,00 sec)
+Ué, apenas mês 12? E R$ 202,40 apenas no mês 12? Eu tenho quase certeza que não foi tudo isso. Vamos filtrar essa query para retornar apenas os livros comprados no mês 12:
+
+SELECT SUM(valor) AS total, MONTH(data_compra) AS mês FROM livros
+WHERE MONTH(data_compra) = 12;
+ 
++--------+------+
+| total  | mês  |
++--------+------+
+| 135.60 |   12 |
++--------+------+
+1 row in set (0,00 sec)
+O que será que está acontecendo? Será que não podemos exibir mais de uma linha com uma função de agregação?
+Muito estranho isso.
+Como vimos, as funções de agregação a princípio retornam apenas uma única linha. O que precisamos fazer é informar que queremos agrupar as linhas por mês soma-las!
+Para isso, utilizaremos a instrução GROUP BY informando qual coluna queremos que seja agrupada:
+
+SELECT SUM(valor) AS total, MONTH(data_compra) AS mês FROM livros
+GROUP BY MONTH(data_compra);
+ 
++--------+------+
+| total  | mês  |
++--------+------+
+|  66.80 |    1 |
+| 135.60 |   12 |
++--------+------+
+2 rows in set (0,00 sec)
+Excelente, veja que agora conseguimos verificar quanto foi gasto por mês!
+
+Vimos que quando utilizamos funções de agregação(como SUM()) por padrão o branco nos retorna apenas uma única linha com o resultado de todas as linhas que foram encontradas. Mas, se quisermos que a função agrupe por diferente de uma outra coluna(como o mês), precisamos informar que essa coluna será agrupada utilizando a instrução GROUP BY.
+
+E aí, gostou da função SUM() e o GROUP BY? Está pronto para utilizá-la em seu banco de dados?
+O que acha aprender mais funções de agregação para criar queries mais robustas e inteligentes? Temos vários cursos de SQL no Alura para que você aprenda desde queries mais básicas até as mais complexas!
