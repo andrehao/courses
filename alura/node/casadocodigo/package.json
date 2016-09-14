@@ -4,26 +4,28 @@
   "description": "Aplicacao casa do codigo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app"
   },
   "author": "Andre Oliveira",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "connect-session-sequelize": "^3.1.0",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
     "express-load": "^1.1.15",
+    "express-session": "^1.14.1",
     "mysql": "^2.11.1",
-    "socket.io": "^1.4.8"
+    "sequelize": "^3.24.3",
+    "socket.io": "^1.4.8",
+    "sqlite3": "^3.1.4"
   },
   "devDependencies": {
     "mocha": "^3.0.2",
     "supertest": "^2.0.0"
   },
   "engines": {
-    "node" : "4.1.1"
-  },
-  "scripts" : {
-    "start" : "node app"
+    "start" : "nodemon app",
+    "node": "4.1.1"
   }
 }
