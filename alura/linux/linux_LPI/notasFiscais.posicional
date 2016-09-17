@@ -1,6 +1,6 @@
-0001guilherme 100,00
-0002paulo      50,15
-0003ana       110,24
-0004carlos    300,29
-0005guilherme 110,20
-7658lucia     325,46
+7658:lucia     :325,46
+0004:carlos    :300,29
+0003:ana       :110,24
+0005:guilherme :110,20
+0001:guilherme :100,00
+0002:paulo     :050,15
