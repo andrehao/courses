@@ -10,4 +10,4 @@ const APP_ROUTES: Routes = [
 	{ path: "shopping-list", component: ShoppingListComponent}
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES);	
+export const routing = RouterModule.forRoot(APP_ROUTES);
