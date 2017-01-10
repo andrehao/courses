@@ -1,3 +1,4 @@
+import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule  } from '@angular/platform-browser';
@@ -9,7 +10,7 @@ import { TemplateDrivenComponent } from "./template-driven/template-driven.compo
 
 @NgModule({
     declarations: [AppComponent, DataDrivenComponent, TemplateDrivenComponent],
-    imports: [BrowserModule, FormsModule, ReactiveFormsModule],
+    imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
