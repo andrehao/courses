@@ -1,0 +1,3 @@
+.div-test p:nth-child(2n) {
+	background-color: blue;
+}
